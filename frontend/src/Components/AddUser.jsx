@@ -20,7 +20,7 @@ export default function AddUser() {
     e.preventDefault();
 
     let res = await fetch(
-      "http://localhost:4000/user-api/user",
+      "https://user-management-3-d9v7.onrender.com/user-api/user",
       {
         method: "POST",
         headers: {
