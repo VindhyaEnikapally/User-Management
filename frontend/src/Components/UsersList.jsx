@@ -1,49 +1,84 @@
-import {useEffect, useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function UsersList() {
 
-  let [users,setUsers]=useState([])
-  let navigate=useNavigate()
+  const [users, setUsers] = useState([]);
 
- //go to user
- const gotoUser=(userObj)=>{
-  navigate('/user',{state:{user:userObj}})
- }
+  const navigate = useNavigate();
 
- useEffect(()=>{
-  async function getUsers(){
-    let res=await fetch('https://user-management-backend-xj2x.onrender.com/user-api/users')
+  //Go to user page
+  function gotoUser(userObj) {
 
-    if(res.status==200){
-      //extract json data
-      let data=await res.json()
-
-      //update the state
-      setUsers(data.payload)
-    }
+    navigate('/user', {
+      state: { user: userObj }
+    });
   }
 
-  getUsers()
- },[])
+  //Fetch users
+  useEffect(() => {
+
+    async function getUsers() {
+
+      try {
+
+        let res = await fetch(
+          'http://localhost:4000/user-api/users'
+        );
+
+        let data = await res.json();
+
+        if(res.status === 200) {
+
+          setUsers(data.payload);
+        }
+
+      }
+      catch(err) {
+
+        console.log(err);
+      }
+    }
+
+    getUsers();
+
+  }, []);
 
   return (
+
     <div className="p-10">
-      <h1 className="text-2xl font-bold mb-6">Users List</h1>
+
+      <h1 className="text-3xl font-bold mb-6">
+        Users List
+      </h1>
 
       <div className="grid md:grid-cols-3 gap-6">
+
         {
-          users.map(user=>(
+          users.map(user => (
+
             <div
               key={user._id}
-              className="border p-4 rounded shadow"
+              className="border rounded p-5 shadow"
             >
-              <h2 className="text-lg font-semibold">{user.username}</h2>
+
+              <h2 className="text-xl font-bold">
+                {user.username}
+              </h2>
+
               <p>{user.email}</p>
 
+              <p>
+                {new Date(
+                  user.dateOfBirth
+                ).toLocaleDateString()}
+              </p>
+
+              <p>{user.mobileNumber}</p>
+
               <button
-                className="mt-3 bg-blue-500 text-white px-4 py-1 rounded"
-                onClick={()=>gotoUser(user)}
+                onClick={() => gotoUser(user)}
+                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
               >
                 View
               </button>
@@ -51,8 +86,9 @@ export default function UsersList() {
             </div>
           ))
         }
+
       </div>
 
     </div>
-  )
+  );
 }

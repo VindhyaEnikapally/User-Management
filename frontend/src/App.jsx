@@ -1,11 +1,15 @@
-import {HashRouter,Routes,Route} from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
+
 import RootLayout from './Components/RootLayout';
 import Home from './Components/Home';
 import UsersList from './Components/UsersList';
 import User from './Components/User';
+import AddUser from './Components/AddUser';
 
 export default function App() {
+
   return (
+
     <HashRouter>
 
       <Routes>
@@ -14,9 +18,20 @@ export default function App() {
 
           <Route index element={<Home />} />
 
-          <Route path="users-list" element={<UsersList />} />
+          <Route
+            path="add-user"
+            element={<AddUser />}
+          />
 
-          <Route path="user" element={<User />} />
+          <Route
+            path="users-list"
+            element={<UsersList />}
+          />
+
+          <Route
+            path="user"
+            element={<User />}
+          />
 
         </Route>
 
